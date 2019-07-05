@@ -2,6 +2,6 @@
 
 <ul>
     <?php foreach ($posts as $post) : ?>
-      <li><?= h($post->title); ?</li>
+      <li><?= h($post->title);?></li>
     <?php endforeach; ?>
 </ul>
