@@ -13,24 +13,38 @@ class PostsController extends AppController
 
     public function view($id = null)
     {
-        $post = $this->Posts->get($id);
+        $post = $this->Posts->get($id, [
+            'contain' => 'Comments'
+        ]);
         $this->set(compact('post'));
     }
 
+//    public function add()
+//    {
+//        $post = $this->Posts->NewEntity();
+//        if ($this->request->is('post')){
+//            $this->Flash->success('Add Success');
+//            $post = $this->Posts->patchEntity($post, $this->request->data);
+//            if($this->Posts->save($post)){
+//                return $this->redirect(['action'=>'index']);
+//            }else{
+//                // error
+//                $this->Flash->error('Add Error');
+//            };
+//
+//        }
+//        $this->set(compact('post'));
+//    }
+
     public function add()
     {
-        $post = $this->Posts->NewEntity();
-        if ($this->request->is('post')){
-            $this->Flash->success('Add Success');
-            $post = $this->Posts->patchEntity($post, $this->request->data);
-            if($this->Posts->save($post)){
-                return $this->redirect(['action'=>'index']);
-            }else{
-                // error
-                $this->Flash->error('Add Error');
-            };
+        $post = $this->Posts->newEntity();
+        $post->title = 'New Post';
+        $this->Posts->save($post);
 
-        }
+        $this->redirect(['controller'=>'Posts','action'=>'edit',
+            $post->id ]);
+
         $this->set(compact('post'));
     }
 
@@ -62,6 +76,7 @@ class PostsController extends AppController
                 // error
                 $this->Flash->error('Delete Error');
             };
+        return $this->redirect(['action'=>'index']);
 
     }
 }

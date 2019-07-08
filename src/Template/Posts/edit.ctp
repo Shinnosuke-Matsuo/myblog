@@ -10,7 +10,8 @@ $this->assign('title','Edit Post')
 
 <?= $this->Form->create($post); ?>
 <?= $this->Form->input('title'); ?>
+<?= $this->Form->input('image'); ?>
 <?= $this->Form->input('body',['rows'=>'3']); ?>
-<?= $this->Form->button('Update') ; ?>
+<?= $this->Form->button('Save') ; ?>
 
 <?= $this->Form->end(); ?>

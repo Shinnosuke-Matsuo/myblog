@@ -20,6 +20,9 @@ $this->assign('title','Blog Posts')
                 ['confirm'=>'Are you sure', 'class'=>'fs12']
             );
           ?>
+          <?php if (!$post->image == '') : ?>
+                <?= $this->Html->image($post->image, array('width'=>'350','height'=>'100')) ?>;
+          <?php endif; ?>
       </li>
     <?php endforeach; ?>
 </ul>

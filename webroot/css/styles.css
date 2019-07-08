@@ -16,6 +16,12 @@ h1 {
     padding-bottom: 5px;
 }
 
+h1 {
+    font-size:14px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+}
+
 ul > li {
     padding: 3px 0;
 }
