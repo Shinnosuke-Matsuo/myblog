@@ -17,6 +17,10 @@ class PostsController extends AppController
             'contain' => 'Comments'
         ]);
         $this->set(compact('post'));
+        $this->loadModel("Categories");
+        $postcategory = $this->Categories->get($post->category_id);
+        $this->set(compact("postcategory"));
+
     }
 
 //    public function add()
@@ -52,10 +56,23 @@ class PostsController extends AppController
     public function edit($id = null)
     {
         $post = $this->Posts->get($id);
+        $this->loadModel("Categories");
+        $categories = $this->Categories->find();
+        $postcategory = $this->Categories->find('all',array(
+            'conditions' => array(
+                'Categories.id' => $post->category_id
+            )
+        ));
+        $this->loadModel("Tags");
+        $tags = $this->Tags->find();
+        $this->set(compact("postcategory"));
+        $this->set(compact("categories"));
+        $this->set(compact("tags"));
+
         if ($this->request->is(['post','put','patch'])){
-            $this->Flash->success('Edit Success');
             $post = $this->Posts->patchEntity($post, $this->request->data);
             if($this->Posts->save($post)){
+                $this->Flash->success('Edit Success');
                 return $this->redirect(['action'=>'index']);
             }else{
                 // error

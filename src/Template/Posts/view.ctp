@@ -17,6 +17,8 @@ $this->assign('title','Blog Detail')
 
 
 <p><?= nl2br(h($post->body)); ?></p>
+<p><?= $this->Html->link($postcategory->name, ['controller'=>'Categories', 'action'=>'view',$postcategory->id]); ?></p>
+
 
 <?php if (count($post->comments)) : ?>
 <h2>Comments <span class="fs12">(<?= count($post->comments); ?>)</span></h2>
