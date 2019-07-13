@@ -14,6 +14,9 @@ class PostsTable extends Table
             'dependent' => true
         ]);
         $this->belongsTo('Categories');
+        $this->belongsToMany('Tags',[
+            'joinTable' => 'posts_tags',
+        ]);
     }
 
     public function validationDefault(Validator $validator)

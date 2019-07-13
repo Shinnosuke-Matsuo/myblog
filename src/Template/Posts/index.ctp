@@ -26,3 +26,8 @@ $this->assign('title','Blog Posts')
       </li>
     <?php endforeach; ?>
 </ul>
+
+<h1>Tag List</h1>
+<?php foreach ($tags as $tag) : ?>
+    <p><?= $this->Html->link($tag->name, ['controller'=>'Tags', 'action'=>'view',$tag->id]); ?></p>
+<?php endforeach; ?>

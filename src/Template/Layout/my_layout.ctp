@@ -6,6 +6,7 @@
         <?= $this->fetch('title') ?>
     </title>
     <?= $this->Html->css('styles.css') ?>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 </head>
 <body>
     <?= $this->element('my_header') ?>

@@ -14,7 +14,7 @@
  */
 
 /*
- * You can empty out this file, if you are certain that you match all requirements.
+ * You can PostsTagsTable.php out this file, if you are certain that you match all requirements.
  */
 
 /*

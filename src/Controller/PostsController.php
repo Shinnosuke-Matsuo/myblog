@@ -9,17 +9,27 @@ class PostsController extends AppController
 
         $posts = $this->Posts->find('all');
         $this->set('posts', $posts);
+
+        $this->loadModel("Tags");
+        $tags = $this->Tags->find();
+        $this->set(compact("tags"));
     }
 
     public function view($id = null)
     {
         $post = $this->Posts->get($id, [
-            'contain' => 'Comments'
+            'contain' => (['Comments','Tags'])
         ]);
         $this->set(compact('post'));
         $this->loadModel("Categories");
         $postcategory = $this->Categories->get($post->category_id);
         $this->set(compact("postcategory"));
+
+        $associated_tags = [];
+        foreach ($post->tags as $tag) {
+            $associated_tags[] = $tag;
+        }
+        $this->set(compact("associated_tags"));
 
     }
 
@@ -55,7 +65,20 @@ class PostsController extends AppController
 
     public function edit($id = null)
     {
-        $post = $this->Posts->get($id);
+        $post = $this->Posts->get($id, [
+            "contain" => "Tags"
+        ]);
+
+        $post_id = $post->id;
+        $this->set(compact("post_id"));
+
+        $associated_tags_ids = [];
+        foreach ($post->tags as $tag) {
+            $associated_tags_ids[] = $tag->id;
+        }
+        $this->set(compact("associated_tags_ids"));
+
+
         $this->loadModel("Categories");
         $categories = $this->Categories->find();
         $postcategory = $this->Categories->find('all',array(
@@ -69,8 +92,22 @@ class PostsController extends AppController
         $this->set(compact("categories"));
         $this->set(compact("tags"));
 
+
         if ($this->request->is(['post','put','patch'])){
             $post = $this->Posts->patchEntity($post, $this->request->data);
+
+            $this->loadModel("PostsTags");
+            $this->PostsTags->deleteAll(['post_id' => $id ]);
+            $selected_tag_ids = $this->request->getData("tag");
+
+
+            foreach ($selected_tag_ids as $tag_id) {
+                $post_tag = $this->PostsTags->newEntity();
+                $post_tag->post_id = $id;
+                $post_tag->tag_id = $tag_id;
+                $this->PostsTags->save($post_tag);
+            }
+
             if($this->Posts->save($post)){
                 $this->Flash->success('Edit Success');
                 return $this->redirect(['action'=>'index']);
