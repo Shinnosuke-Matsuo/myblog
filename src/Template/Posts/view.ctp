@@ -19,6 +19,11 @@ $this->assign('title','Blog Detail')
 <p><?= nl2br(h($post->body)); ?></p>
 <p><?= $this->Html->link($postcategory->name, ['controller'=>'Categories', 'action'=>'view',$postcategory->id]); ?></p>
 
+<h2>Items <span class="fs12"></span></h2>
+<?php foreach ($post->items as $item) : ?>
+    <p><?= $item->content ; ?></p>
+<?php endforeach; ?>
+
 <h2>Tags <span class="fs12"></span></h2>
 <?php foreach ($associated_tags as $associated_tag) : ?>
      <p><?= $this->Html->link($associated_tag->name, ['controller'=>'Tags', 'action'=>'view',$associated_tag->id]); ?></p>

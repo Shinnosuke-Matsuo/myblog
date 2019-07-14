@@ -2,6 +2,10 @@
 $this->assign('title','Blog Posts')
 ?>
 
+<h1>
+    <?= $this->Html->link('最近チェックした記事', ['action'=>'recent'], ['class'=>['fs12']]); ?>
+</h1>
+
 
 <h1>
     Blog Posts
@@ -26,6 +30,7 @@ $this->assign('title','Blog Posts')
       </li>
     <?php endforeach; ?>
 </ul>
+
 
 <h1>Tag List</h1>
 <?php foreach ($tags as $tag) : ?>

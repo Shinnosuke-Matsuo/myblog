@@ -17,7 +17,8 @@ $(document).on('click','.add_item', function() {
             {
                 //保存完了
                 //ここで、返り値（dom）を描画する
-                content.show();
+                // content.show();
+                console.log(dom);
 
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) //通信失敗

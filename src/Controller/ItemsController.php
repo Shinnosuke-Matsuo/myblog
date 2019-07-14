@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-class PostsController extends AppController
+class ItemsController extends AppController
 {
     public function add()
     {

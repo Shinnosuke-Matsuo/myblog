@@ -18,7 +18,7 @@ class PostsController extends AppController
     public function view($id = null)
     {
         $post = $this->Posts->get($id, [
-            'contain' => (['Comments','Tags'])
+            'contain' => (['Comments','Tags','Items'])
         ]);
         $this->set(compact('post'));
         $this->loadModel("Categories");
@@ -31,6 +31,19 @@ class PostsController extends AppController
         }
         $this->set(compact("associated_tags"));
 
+
+        $session = $this->request->getSession();
+        if ($session->check("checked_articles")) {
+            $checked_article_array = $session->read('checked_articles');
+        } else {
+            $checked_article_array = [];
+        }
+
+        if (!in_array($id, $checked_article_array)) {
+            $checked_article_array[] = $id;
+        }
+
+        $session->write('checked_articles', $checked_article_array);
     }
 
 //    public function add()
@@ -66,7 +79,7 @@ class PostsController extends AppController
     public function edit($id = null)
     {
         $post = $this->Posts->get($id, [
-            "contain" => "Tags"
+            'contain' => (['Tags','Items'])
         ]);
 
         $post_id = $post->id;
@@ -131,6 +144,22 @@ class PostsController extends AppController
                 $this->Flash->error('Delete Error');
             };
         return $this->redirect(['action'=>'index']);
+
+    }
+
+    public function recent()
+    {
+        $session = $this->request->getSession();
+
+        $checked_articles_id = $session->read('checked_articles');
+        if ($session->check("checked_articles")) {
+            $checked_articles_id = $session->read('checked_articles');
+        } else {
+            $checked_articles_id = [0];
+        }
+
+        $posts = $this->Posts->find('all',['conditions' => ['id in' => $checked_articles_id]]);
+        $this->set(compact('posts'));
 
     }
 }

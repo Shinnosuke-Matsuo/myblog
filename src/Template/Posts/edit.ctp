@@ -8,11 +8,15 @@ $this->assign('title','Edit Post')
     Edit Post
 </h1>
 
+<h2>Adding Items area <span class="fs12"></span></h2>
+<div class="contentArea">
+
+</div>
 
 本文<input class="textdata" type="text" name="content" placeholder="本文">
 <button type="button" class="add_item">保存</button>
 
-
+<h2>Editing area <span class="fs12"></span></h2>
 <?= $this->Form->create($post); ?>
 <?= $this->Form->input('title'); ?>
 <?= $this->Form->input('image'); ?>
@@ -26,6 +30,12 @@ $this->assign('title','Edit Post')
     <?php endforeach; ?>
 </select>
 
+<h2>Items <span class="fs12"></span></h2>
+<?php foreach ($post->items as $item) : ?>
+    <p><?= $item->content ; ?></p>
+<?php endforeach; ?>
+
+<h2>Tags <span class="fs12"></span></h2>
 <?php foreach ( $tags as $tag ) : ?>
     <?= $this->Form->input ( $tag->name, [
         "type" => "checkbox",
@@ -43,7 +53,7 @@ $this->assign('title','Edit Post')
 <script>
     $(document).on('click','.add_item', function() {
         var post_id = <?= $post_id ?>;
-        var content = $('.textdata').text();
+        var content = $('.textdata').val();
         var csrf = $('input[name=_csrfToken]').val();
         $.ajax(
             {
@@ -61,8 +71,11 @@ $this->assign('title','Edit Post')
                 {
                     //保存完了
                     //ここで、返り値（dom）を描画する
-                    content.show();
+                    // content.show();
+                    $('.contentArea').append(dom);
 
+
+                    // console.log(dom);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) //通信失敗
                 {
